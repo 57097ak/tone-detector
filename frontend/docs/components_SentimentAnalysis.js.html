@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/SentimentAnalysis.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/SentimentAnalysis.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState } from 'react';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { addSearchHistory } from '../store/sentimentSlice';
+import { FaMicrophone } from 'react-icons/fa';
+import Dashboard from './Dashboard';
+
+/**
+ * Runs the tone analysis.
+ * 
+ * @param {string} text - The text to be analyzed.
+ * @param {Function} setResult - Function to set the result state.
+ * @param {Function} dispatch - Redux dispatch function.
+ */
+const run = async (text, setResult, dispatch) => {
+  try {
+    const response = await axios.post(
+      'https://api.sapling.ai/api/v1/tone',
+      {
+        key: 'AU0SIHYDOYZ1CS7ZE8F0QPJAAPZKIXC2',
+        text,
+      }
+    );
+    const { status, data } = response;
+    console.log({ status });
+    console.log(JSON.stringify(data, null, 4));
+    setResult(data);
+    dispatch(addSearchHistory({ text, result: data }));
+  } catch (err) {
+    const { msg } = err.response.data;
+    console.log({ err: msg });
+  }
+};
+
+/**
+ * SentimentAnalysis component handles text input and displays the tone analysis result.
+ * 
+ * @component
+ */
+const SentimentAnalysis = () => {
+  const [text, setText] = useState('');
+  const [result, setResult] = useState(null);
+  const dispatch = useDispatch();
+
+  /**
+   * Handles form submission for sentiment analysis.
+   * 
+   * @param {React.FormEvent&lt;HTMLFormElement>} e - The form event.
+   */
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    await run(text, setResult, dispatch);
+    setText(''); // Clear the input box after submission
+  };
+
+  /**
+   * Formats the result for display.
+   * 
+   * @param {Object} result - The result object from the tone analysis.
+   * @returns {JSX.Element|null} - The formatted result.
+   */
+  const formatResult = (result) => {
+    if (!result) return null;
+    const overall = result.overall.map(([percentage, feeling, emoji]) => ({
+      feeling,
+      emoji,
+      percentage: (percentage * 100).toFixed(2),
+    }));
+
+    return (
+      &lt;div className="mt-4 p-4 bg-gray-100 rounded shadow-md w-full">
+        &lt;h3 className="text-xl mb-2 font-semibold">Analysis Result:&lt;/h3>
+        &lt;p className="text-lg mb-2">&lt;strong>User Input:&lt;/strong> {result.sents[0]}&lt;/p>
+        {overall.map((item, index) => (
+          &lt;div key={index} className="mb-2">
+            &lt;div className="flex items-center mb-1">
+              &lt;span className="mr-2">{item.emoji}&lt;/span>
+              &lt;span>{item.feeling}&lt;/span>
+            &lt;/div>
+            &lt;div className="relative h-4 bg-gray-300 rounded-full overflow-hidden">
+              &lt;div
+                className="absolute top-0 left-0 h-full bg-purple-600"
+                style={{ width: `${item.percentage}%` }}
+              >&lt;/div>
+            &lt;/div>
+          &lt;/div>
+        ))}
+      &lt;/div>
+    );
+  };
+
+  return (
+    &lt;div className="flex h-screen">
+      &lt;Dashboard />
+      &lt;div className="flex-1 flex items-center justify-center p-4">
+        &lt;form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-2xl">
+          &lt;h2 className="text-2xl mb-4 font-semibold">Tone Analysis&lt;/h2>
+          &lt;textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="block w-full mb-4 p-2 border rounded h-32"
+            placeholder="Enter text here"
+          >&lt;/textarea>
+          &lt;div className="flex items-center justify-between">
+            &lt;button type="submit" className="bg-purple-600 text-white py-2 px-4 rounded">Submit&lt;/button>
+            &lt;button type="button" className="ml-4 bg-purple-600 text-white p-2 rounded-full">
+              &lt;FaMicrophone />
+            &lt;/button>
+          &lt;/div>
+          {formatResult(result)}
+        &lt;/form>
+      &lt;/div>
+    &lt;/div>
+  );
+};
+
+export default SentimentAnalysis;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#Dashboard">Dashboard</a></li><li><a href="global.html#Login">Login</a></li><li><a href="global.html#Navbar">Navbar</a></li><li><a href="global.html#Register">Register</a></li><li><a href="global.html#ResultPage">ResultPage</a></li><li><a href="global.html#SentimentAnalysis">SentimentAnalysis</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#run">run</a></li><li><a href="global.html#sentimentSlice">sentimentSlice</a></li><li><a href="global.html#userSlice">userSlice</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a>
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
