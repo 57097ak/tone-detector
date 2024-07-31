@@ -52,7 +52,7 @@ This project is a full-stack web application built using the MERN stack (MongoDB
    cd your-repository/backend
 
 ### API Documentation
-    API documentation is provided by Swagger. You can view and test the API endpoints using the Swagger UI:
+  ### API documentation is provided by Swagger. You can view and test the API endpoints using the Swagger UI:
 
 ### Base URL: http://localhost:3001
-    Swagger Documentation: http://localhost:3001/api-docs
+   ### Swagger Documentation: http://localhost:3001/api-docs
