@@ -4,6 +4,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const errorHandler = require('./middleware/errorHandler');
+const setupSwagger = require('./swagger'); 
 
 dotenv.config();
 
@@ -11,6 +12,8 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+setupSwagger(app);
 
 app.use('/api/users', userRoutes);
 
