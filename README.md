@@ -48,7 +48,7 @@ This project is a full-stack web application built using the MERN stack (MongoDB
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/your-repository.git
+   git clone https://github.com/57097ak/tone-detector.git
    cd your-repository/backend
 
 ##### API Documentation

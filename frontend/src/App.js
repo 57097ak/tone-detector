@@ -16,7 +16,7 @@ const App = () => {
       <div className="container mx-auto p-4">
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<Register />} />
           <Route path="/sentiment-analysis" element={<ProtectedRoutes><SentimentAnalysis /></ProtectedRoutes>} />
           <Route path="/result/:index" element={<ProtectedRoutes><ResultPage /></ProtectedRoutes>} />
           <Route path="/dashboard" element={<Dashboard />} />

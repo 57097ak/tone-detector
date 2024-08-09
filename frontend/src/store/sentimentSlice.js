@@ -1,5 +1,3 @@
-// src/store/sentimentSlice.js
-
 import { createSlice } from '@reduxjs/toolkit';
 
 /**
@@ -42,6 +40,17 @@ const sentimentSlice = createSlice({
     },
 
     /**
+     * Removes an item from the search history.
+     *
+     * @param {Object} state - The current state of the slice.
+     * @param {Object} action - The action object containing payload.
+     * @param {number} action.payload - The index of the search history item to be removed.
+     */
+    removeSearchHistory(state, action) {
+      state.searchHistory.splice(action.payload, 1);
+    },
+
+    /**
      * Sets the loading state.
      *
      * @param {Object} state - The current state of the slice.
@@ -66,6 +75,6 @@ const sentimentSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { addSearchHistory, setLoading, setError } = sentimentSlice.actions;
+export const { addSearchHistory, removeSearchHistory, setLoading, setError } = sentimentSlice.actions;
 
 export default sentimentSlice.reducer;
